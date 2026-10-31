@@ -1,0 +1,4 @@
+body{margin:0;background:#0E0F11;color:#F3EFE7;font:17px/1.5 system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px;box-sizing:border-box}
+h1{font-size:26px;margin:0 0 8px}
+p{opacity:.8;margin:0 0 12px}
+a{display:inline-block;margin-top:8px;padding:12px 22px;border-radius:999px;background:#E8B04B;color:#0E0F11;font-weight:600;text-decoration:none}

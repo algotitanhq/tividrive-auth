@@ -1,0 +1,14 @@
+// Tividrive's Google OAuth redirect page: static assets only, no Worker code, no storage, no logs kept by us.
+// Published at https://tividrive-auth.storagebits.workers.dev/google (the redirect URI registered at Google).
+// Deployed from algotitanhq/tividrive-auth only after storagebits's Go (PUBLIC_RELEASE=true), like every site.
+{
+  "name": "tividrive-auth",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "none",
+    "html_handling": "auto-trailing-slash"
+  },
+  "workers_dev": true,
+  "preview_urls": false
+}

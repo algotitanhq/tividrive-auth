@@ -1,0 +1,56 @@
+name: ci
+
+# Every push: the redirect page's test. Deploy: `wrangler deploy` of the static assets in public/ on a push to main
+# (or a manual run on main), only once the repository variable PUBLIC_RELEASE is "true" (storagebits's Go). The
+# Cloudflare keys (secret CLOUDFLARE_API_TOKEN, variable CLOUDFLARE_ACCOUNT_ID, not read here) come from the
+# algotitanhq organization; never add repository-level copies. The Deploy step is uberblok's (its DECISIONS D19.1):
+# it asks Cloudflare for the token's single account and masks its ID before running wrangler.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WRANGLER_VERSION: "4.142.0"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+      - name: Test the redirect page
+        run: node test.js
+      - name: Deploy
+        if: vars.PUBLIC_RELEASE == 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::The secret CLOUDFLARE_API_TOKEN is not visible to this repository"
+            exit 1
+          fi
+          if ! accounts="$(curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.cloudflare.com/client/v4/accounts)"; then
+            echo "::error::Cloudflare did not answer the account lookup"
+            exit 1
+          fi
+          account="$(echo "$accounts" | jq -r 'if .success and (.result | length) == 1 and (.result[0].id | type) == "string" then .result[0].id else empty end')"
+          if [ -z "$account" ]; then
+            echo "::error::The token does not see exactly one Cloudflare account"
+            exit 1
+          fi
+          echo "::add-mask::$account"
+          export CLOUDFLARE_ACCOUNT_ID="$account"
+          message="$(git log -1 --format=%s | head -c 100)"
+          npx --yes "wrangler@${WRANGLER_VERSION}" deploy --message "$message"
