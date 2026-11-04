@@ -17,3 +17,22 @@ for (const bad of [
   `?state=192.168.1.2_8739_${s}%2F..&code=c`,
 ]) assert.strictEqual(tvTarget(bad), null, bad);
 console.log("google redirect page: ok");
+
+// The QR code's first stop (tv.html): the fragment names a LAN address, a kind and the nonce, nothing else.
+const { tvPage } = require("./public/tv.js");
+const n = "abcdefghjkmnpqrs23456789";
+assert.strictEqual(tvPage(`#192.168.1.20_8739_g_${n}`), `http://192.168.1.20:8739/google?n=${n}`);
+assert.strictEqual(tvPage(`#10.0.0.5_8740_d_${n}`), `http://10.0.0.5:8740/pair?n=${n}`);
+for (const bad of [
+  `#8.8.8.8_8739_g_${n}`, // public address: never
+  `#192.168.1.20_80_g_${n}`, // privileged port
+  `#192.168.1.20_8739_x_${n}`, // unknown kind
+  `#192.168.1.20_8739_g_short`,
+  `#192.168.1.20_8739_g_${n}/../evil`,
+  `#evil.example_8739_g_${n}`,
+  "",
+]) assert.strictEqual(tvPage(bad), null, bad);
+const { SAME_WIFI } = require("./public/reach.js");
+assert.strictEqual(SAME_WIFI.fr, "Ton téléphone doit être sur le même Wi-Fi que la TV.");
+assert.strictEqual(SAME_WIFI.en, "Your phone must be on the same Wi-Fi as the TV.");
+console.log("tv page: ok");

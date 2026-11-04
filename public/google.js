@@ -12,9 +12,8 @@ function tvTarget(search) {
   if (!m) return null;
   const [a, b, c, d] = m.slice(1, 5).map(Number);
   const port = Number(m[5]);
-  if ([a, b, c, d].some((n) => n > 255) || port < 1024 || port > 65535) return null;
-  const lan = a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168);
-  if (!lan) return null;
+  const lanHost = typeof module !== "undefined" ? require("./reach.js").lanHost : globalThis.lanHost;
+  if (!lanHost(a, b, c, d, port)) return null;
   const out = new URLSearchParams({ state });
   const code = q.get("code");
   if (code) out.set("code", code);
@@ -37,13 +36,6 @@ if (typeof document !== "undefined") {
     set(en ? "This link isn't from Tividrive" : "Ce lien ne vient pas de Tividrive",
       en ? "Scan the QR code shown on the TV." : "Scannez le code QR affiché sur la télé.");
   } else {
-    set(en ? "Back to the TV…" : "Retour vers la télé…",
-      en ? "If nothing happens, check that the phone is on the TV's Wi-Fi, then tap below."
-        : "Si rien ne se passe, vérifiez que le téléphone est sur le Wi-Fi de la télé, puis touchez ci-dessous.");
-    const a = document.getElementById("go");
-    a.href = target;
-    a.textContent = en ? "Continue to the TV" : "Continuer vers la télé";
-    a.hidden = false;
-    location.replace(target);
+    goToTv(target, en, true); // replace: the page with the code must not come back with « back »
   }
 }
