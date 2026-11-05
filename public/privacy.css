@@ -1,0 +1,10 @@
+body{margin:0;background:#0E0F11;color:#F3EFE7;font:17px/1.6 system-ui,sans-serif;padding:24px}
+main{max-width:46rem;margin:0 auto}
+h1{font-size:28px;margin:8px 0 4px}
+h2{font-size:20px;margin:28px 0 6px;color:#E8B04B}
+p,li{opacity:.88}
+ul{padding-left:1.2em}
+a{color:#E8B04B}
+nav{font-size:15px;opacity:.8}
+.date{font-size:14px;opacity:.6}
+hr{border:0;border-top:1px solid #2A2C31;margin:40px 0}

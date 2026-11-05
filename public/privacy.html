@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Tividrive — Confidentialité / Privacy</title>
+<link rel="stylesheet" href="/privacy.css">
+<main>
+<nav><a href="#fr">Français</a> · <a href="#en">English</a></nav>
+
+<section id="fr" lang="fr">
+<h1>Tividrive — Politique de confidentialité</h1>
+<p class="date">Version du 5 novembre 2026</p>
+
+<p>Tividrive est une application Android TV qui affiche, en lecture seule, les fichiers de vos propres comptes Dropbox, OneDrive et Google Drive et de vos partages réseau (SMB). <strong>Nous ne recueillons aucune donnée vous concernant</strong> : pas de compte chez nous, pas de serveur qui reçoit vos fichiers, pas de statistiques, pas de rapport de plantage, pas de publicité. Rien n'est vendu ni partagé.</p>
+
+<h2>Ce que l'application lit</h2>
+<ul>
+<li><strong>Dropbox</strong> : le nom du compte, la liste des dossiers et le contenu des fichiers (autorisations <code>account_info.read</code>, <code>files.metadata.read</code>, <code>files.content.read</code>).</li>
+<li><strong>OneDrive</strong> (comptes Microsoft personnels) : le nom ou l'adresse du compte et vos fichiers (<code>Files.Read</code>, <code>User.Read</code>, <code>offline_access</code>).</li>
+<li><strong>Google Drive</strong> : l'adresse du compte et vos fichiers (<code>openid</code>, <code>email</code>, <code>drive.readonly</code>).</li>
+<li><strong>Partage réseau (SMB)</strong> : l'adresse du serveur, le partage, l'utilisateur et le mot de passe que vous saisissez.</li>
+</ul>
+<p>L'application n'écrit, ne déplace et ne supprime jamais rien dans vos comptes. Les fichiers vont directement du service à la télé.</p>
+
+<h2>Ce qui reste sur la télé</h2>
+<ul>
+<li>Les jetons de connexion et le mot de passe SMB sont chiffrés avec une clé du Keystore Android de la télé. Ils ne sont jamais sauvegardés ni copiés vers un autre appareil.</li>
+<li>Les noms de comptes, les épinglés, les points de reprise, la liste des dossiers déjà ouverts et les réglages restent dans le stockage privé de l'application, sans sauvegarde ni transfert.</li>
+<li>Des vignettes, des copies de documents et des morceaux de vidéos sont gardés en cache pour aller plus vite.</li>
+</ul>
+<p><strong>Pour tout effacer</strong> : Réglages → Mes drives → retirer le drive (efface tout ce qui le concerne), ou désinstaller l'application. « Vider le cache » efface les vignettes et les documents.</p>
+
+<h2>Le passage par notre page web</h2>
+<p>Pour vous connecter sans le clavier de la télé, le code QR ouvre une page de <code>tividrive-auth.storagebits.workers.dev</code> (hébergée chez Cloudflare), puis la télé sur votre Wi-Fi. Cette page ne contient que des fichiers fixes : elle ne garde rien et n'a pas de base de données. Comme pour tout site, Cloudflare voit l'adresse IP et le navigateur du téléphone, et l'adresse IP publique de la télé quand elle vérifie que la page répond. Pour Google Drive, le code de connexion à usage unique passe par cette page ; il est inutile sans la clé secrète qui reste sur la télé. L'adresse de la télé sur votre réseau reste dans le téléphone et n'est pas envoyée au serveur.</p>
+<p>Sur votre réseau local, le téléphone parle à la télé en HTTP pendant la connexion, et la télé parle au partage SMB ; ce trafic ne quitte pas votre réseau. Tout le reste passe en HTTPS.</p>
+
+<h2>Recherche vocale et avis</h2>
+<ul>
+<li>La recherche vocale utilise la reconnaissance vocale du système de la télé ; le texte cherché est envoyé au service où se trouvent vos fichiers.</li>
+<li>« Donner mon avis » affiche un code QR vers un formulaire Google, à remplir sur votre téléphone si vous le souhaitez. L'application n'y envoie rien ; ce que vous y écrivez est régi par les règles de confidentialité de Google.</li>
+</ul>
+
+<h2>Retirer l'accès chez chaque service</h2>
+<p>Retirer un drive dans l'application efface ses données sur la télé. Pour retirer aussi l'autorisation chez le service :</p>
+<ul>
+<li>Dropbox : <a href="https://www.dropbox.com/account/connected_apps">Paramètres → Applications connectées</a>.</li>
+<li>Microsoft : <a href="https://account.live.com/consent/Manage">Compte Microsoft → Confidentialité → Applications et services</a>.</li>
+<li>Google : <a href="https://myaccount.google.com/connections">Compte Google → Sécurité → Applications et services tiers</a>.</li>
+</ul>
+
+<h2>Données Google</h2>
+<p>L'utilisation et le transfert vers toute autre application des informations reçues des API Google respectent les <a href="https://developers.google.com/terms/api-services-user-data-policy">règles relatives aux données utilisateur des services d'API Google</a>, y compris les exigences d'utilisation limitée. Ces données ne servent qu'à afficher vos fichiers sur la télé.</p>
+
+<h2>Enfants</h2>
+<p>Tividrive ne s'adresse pas aux enfants et ne recueille aucune donnée, de personne.</p>
+
+<h2>Contact et changements</h2>
+<p>Une question : <a href="https://github.com/algotitanhq/tividrive/issues">github.com/algotitanhq/tividrive/issues</a>. Toute modification de cette politique est publiée sur cette page, avec sa date.</p>
+</section>
+
+<hr>
+
+<section id="en" lang="en">
+<h1>Tividrive — Privacy policy</h1>
+<p class="date">Version of 5 November 2026</p>
+
+<p>Tividrive is an Android TV app that shows, read-only, the files of your own Dropbox, OneDrive and Google Drive accounts and of your network shares (SMB). <strong>We collect no data about you</strong>: no account with us, no server that receives your files, no analytics, no crash reports, no advertising. Nothing is sold or shared.</p>
+
+<h2>What the app reads</h2>
+<ul>
+<li><strong>Dropbox</strong>: the account name, the folder listings and the file contents (scopes <code>account_info.read</code>, <code>files.metadata.read</code>, <code>files.content.read</code>).</li>
+<li><strong>OneDrive</strong> (personal Microsoft accounts): the account name or address and your files (<code>Files.Read</code>, <code>User.Read</code>, <code>offline_access</code>).</li>
+<li><strong>Google Drive</strong>: the account address and your files (<code>openid</code>, <code>email</code>, <code>drive.readonly</code>).</li>
+<li><strong>Network share (SMB)</strong>: the server address, share, user and password you type.</li>
+</ul>
+<p>The app never writes, moves or deletes anything in your accounts. Files go straight from the service to the TV.</p>
+
+<h2>What stays on the TV</h2>
+<ul>
+<li>Sign-in tokens and the SMB password are encrypted with a key in the TV's Android Keystore. They are never backed up or copied to another device.</li>
+<li>Account names, pins, resume points, the listings of folders already opened and the settings stay in the app's private storage, with no backup or transfer.</li>
+<li>Thumbnails, document copies and parts of videos are cached to go faster.</li>
+</ul>
+<p><strong>To erase everything</strong>: Settings → Mes drives → remove the drive (erases everything about it), or uninstall the app. « Vider le cache » (Clear cache) erases thumbnails and documents.</p>
+
+<h2>Our web page</h2>
+<p>To sign in without the TV keyboard, the QR code opens a page on <code>tividrive-auth.storagebits.workers.dev</code> (hosted by Cloudflare), then the TV on your Wi-Fi. That page is static files only: it keeps nothing and has no database. As with any website, Cloudflare sees the phone's IP address and browser, and the TV's public IP address when it checks that the page answers. For Google Drive, the one-time sign-in code passes through this page; it is useless without the secret key that stays on the TV. The TV's address on your network stays in the phone and is not sent to the server.</p>
+<p>On your local network, the phone talks to the TV over HTTP during sign-in, and the TV talks to the SMB share; that traffic does not leave your network. Everything else uses HTTPS.</p>
+
+<h2>Voice search and feedback</h2>
+<ul>
+<li>Voice search uses the TV system's speech recognition; the searched text is sent to the service that holds your files.</li>
+<li>« Donner mon avis » (Give feedback) shows a QR code to a Google Form, to fill in on your phone if you wish. The app sends nothing to it; what you write there is governed by Google's privacy terms.</li>
+</ul>
+
+<h2>Revoking access at each service</h2>
+<p>Removing a drive in the app erases its data on the TV. To also revoke the permission at the service:</p>
+<ul>
+<li>Dropbox: <a href="https://www.dropbox.com/account/connected_apps">Settings → Connected apps</a>.</li>
+<li>Microsoft: <a href="https://account.live.com/consent/Manage">Microsoft account → Privacy → Apps and services</a>.</li>
+<li>Google: <a href="https://myaccount.google.com/connections">Google Account → Security → Third-party apps and services</a>.</li>
+</ul>
+
+<h2>Google user data</h2>
+<p>Tividrive's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements. This data is used only to show your files on the TV.</p>
+
+<h2>Children</h2>
+<p>Tividrive is not directed at children and collects no data from anyone.</p>
+
+<h2>Contact and changes</h2>
+<p>Questions: <a href="https://github.com/algotitanhq/tividrive/issues">github.com/algotitanhq/tividrive/issues</a>. Any change to this policy is published on this page, with its date.</p>
+</section>
+</main>
+</html>
