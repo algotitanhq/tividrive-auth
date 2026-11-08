@@ -21,6 +21,10 @@ console.log("google redirect page: ok");
 // The privacy policy (ALG-392): three languages, one contact email in each, no link to a private repo.
 const privacy = require("node:fs").readFileSync(require("node:path").join(__dirname, "public/privacy.html"), "utf8");
 for (const l of ["fr", "en", "es"]) assert.ok(privacy.includes(`<section id="${l}" lang="${l}">`), l);
+// English first (ALG-395): page language, the language links and the sections all go en, fr, es.
+assert.ok(privacy.includes('<html lang="en">'));
+assert.deepStrictEqual([...privacy.matchAll(/<section id="(\w+)"/g)].map((m) => m[1]), ["en", "fr", "es"]);
+assert.deepStrictEqual([...privacy.match(/<nav>.*<\/nav>/)[0].matchAll(/href="#(\w+)"/g)].map((m) => m[1]), ["en", "fr", "es"]);
 const mails = privacy.match(/mailto:[^"]+/g) || [];
 assert.strictEqual(mails.length, 3);
 assert.strictEqual(new Set(mails).size, 1);
