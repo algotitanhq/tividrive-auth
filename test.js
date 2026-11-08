@@ -26,4 +26,6 @@ assert.strictEqual(mails.length, 3);
 assert.strictEqual(new Set(mails).size, 1);
 assert.match(mails[0], /^mailto:[^@\s]+@[^@\s]+\.[a-z]+$/);
 assert.ok(!privacy.includes("github.com"), "no repo link");
+assert.ok(!privacy.includes("@@CONTACT@@"), "placeholder left");
+assert.strictEqual((privacy.match(/mailto:([^"]+)">\1</g) || []).length, 3, "link text = address");
 console.log("privacy page: ok");
