@@ -17,7 +17,10 @@ for (const bad of [
   `?state=192.168.1.2_8739_${s}%2F..&code=c`,
 ]) assert.strictEqual(tvTarget(bad), null, bad);
 // English by default, French and Spanish as translations, one key set (ALG-395).
-const { TEXT } = require("./public/google.js");
+const { TEXT, pageLang } = require("./public/google.js");
+for (const [nav, want] of [["fr-CA", "fr"], ["es-MX", "es"], ["en-US", "en"], ["de-DE", "en"], ["", "en"], [undefined, "en"]]) {
+  assert.strictEqual(pageLang(nav), want, String(nav));
+}
 assert.deepStrictEqual(Object.keys(TEXT), ["en", "fr", "es"]);
 for (const l of ["fr", "es"]) assert.deepStrictEqual(Object.keys(TEXT[l]), Object.keys(TEXT.en), l);
 const html = require("node:fs").readFileSync(require("node:path").join(__dirname, "public/google.html"), "utf8");

@@ -22,6 +22,12 @@ function tvTarget(search) {
   return `http://${a}.${b}.${c}.${d}:${port}/google/done?${out}`;
 }
 
+/** The phone's language for this page: English unless the browser prefers French or Spanish (ALG-395). */
+function pageLang(navLang) {
+  const l = (navLang || "").toLowerCase();
+  return l.startsWith("fr") ? "fr" : l.startsWith("es") ? "es" : "en";
+}
+
 /** Every text of the page, English first: the default for any other browser language. */
 const TEXT = {
   en: { notOurs: "This link isn't from Tividrive", scanTv: "Scan the QR code shown on the TV.", back: "Back to the TV…",
@@ -33,12 +39,10 @@ const TEXT = {
     ifNothing: "Si no pasa nada, compruebe que el teléfono esté en la red Wi-Fi de la TV y toque abajo.", go: "Continuar a la TV" },
 };
 
-if (typeof module !== "undefined") module.exports = { tvTarget, TEXT };
+if (typeof module !== "undefined") module.exports = { tvTarget, TEXT, pageLang };
 
 if (typeof document !== "undefined") {
-  // English unless the browser prefers French or Spanish (ALG-395).
-  const nav = (navigator.language || "").toLowerCase();
-  const lang = nav.startsWith("fr") ? "fr" : nav.startsWith("es") ? "es" : "en";
+  const lang = pageLang(navigator.language);
   const t = TEXT[lang];
   document.documentElement.lang = lang;
   const target = tvTarget(location.search);
