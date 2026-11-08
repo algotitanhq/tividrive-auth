@@ -16,6 +16,12 @@ for (const bad of [
   `?code=c`,
   `?state=192.168.1.2_8739_${s}%2F..&code=c`,
 ]) assert.strictEqual(tvTarget(bad), null, bad);
+// English by default, French and Spanish as translations, one key set (ALG-395).
+const { TEXT } = require("./public/google.js");
+assert.deepStrictEqual(Object.keys(TEXT), ["en", "fr", "es"]);
+for (const l of ["fr", "es"]) assert.deepStrictEqual(Object.keys(TEXT[l]), Object.keys(TEXT.en), l);
+const html = require("node:fs").readFileSync(require("node:path").join(__dirname, "public/google.html"), "utf8");
+assert.ok(html.includes('<html lang="en">') && html.includes(">Back to the TV…<"));
 console.log("google redirect page: ok");
 
 // The privacy policy (ALG-392): three languages, one contact email in each, no link to a private repo.

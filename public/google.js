@@ -22,10 +22,25 @@ function tvTarget(search) {
   return `http://${a}.${b}.${c}.${d}:${port}/google/done?${out}`;
 }
 
-if (typeof module !== "undefined") module.exports = { tvTarget };
+/** Every text of the page, English first: the default for any other browser language. */
+const TEXT = {
+  en: { notOurs: "This link isn't from Tividrive", scanTv: "Scan the QR code shown on the TV.", back: "Back to the TV…",
+    ifNothing: "If nothing happens, check that the phone is on the TV's Wi-Fi, then tap below.", go: "Continue to the TV" },
+  fr: { notOurs: "Ce lien ne vient pas de Tividrive", scanTv: "Scannez le code QR affiché sur la télé.", back: "Retour vers la télé…",
+    ifNothing: "Si rien ne se passe, vérifiez que le téléphone est sur le Wi-Fi de la télé, puis touchez ci-dessous.",
+    go: "Continuer vers la télé" },
+  es: { notOurs: "Este enlace no viene de Tividrive", scanTv: "Escanee el código QR que aparece en la TV.", back: "Volviendo a la TV…",
+    ifNothing: "Si no pasa nada, compruebe que el teléfono esté en la red Wi-Fi de la TV y toque abajo.", go: "Continuar a la TV" },
+};
+
+if (typeof module !== "undefined") module.exports = { tvTarget, TEXT };
 
 if (typeof document !== "undefined") {
-  const en = (navigator.language || "").toLowerCase().startsWith("en");
+  // English unless the browser prefers French or Spanish (ALG-395).
+  const nav = (navigator.language || "").toLowerCase();
+  const lang = nav.startsWith("fr") ? "fr" : nav.startsWith("es") ? "es" : "en";
+  const t = TEXT[lang];
+  document.documentElement.lang = lang;
   const target = tvTarget(location.search);
   // The code leaves the address bar and the history at once.
   history.replaceState(null, "", location.pathname);
@@ -34,15 +49,12 @@ if (typeof document !== "undefined") {
     document.getElementById("text").textContent = text;
   };
   if (!target) {
-    set(en ? "This link isn't from Tividrive" : "Ce lien ne vient pas de Tividrive",
-      en ? "Scan the QR code shown on the TV." : "Scannez le code QR affiché sur la télé.");
+    set(t.notOurs, t.scanTv);
   } else {
-    set(en ? "Back to the TV…" : "Retour vers la télé…",
-      en ? "If nothing happens, check that the phone is on the TV's Wi-Fi, then tap below."
-        : "Si rien ne se passe, vérifiez que le téléphone est sur le Wi-Fi de la télé, puis touchez ci-dessous.");
+    set(t.back, t.ifNothing);
     const a = document.getElementById("go");
     a.href = target;
-    a.textContent = en ? "Continue to the TV" : "Continuer vers la télé";
+    a.textContent = t.go;
     a.hidden = false;
     location.replace(target);
   }
