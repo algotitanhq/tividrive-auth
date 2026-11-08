@@ -17,3 +17,15 @@ for (const bad of [
   `?state=192.168.1.2_8739_${s}%2F..&code=c`,
 ]) assert.strictEqual(tvTarget(bad), null, bad);
 console.log("google redirect page: ok");
+
+// The privacy policy (ALG-392): three languages, one contact email in each, no link to a private repo.
+const privacy = require("node:fs").readFileSync(require("node:path").join(__dirname, "public/privacy.html"), "utf8");
+for (const l of ["fr", "en", "es"]) assert.ok(privacy.includes(`<section id="${l}" lang="${l}">`), l);
+const mails = privacy.match(/mailto:[^"]+/g) || [];
+assert.strictEqual(mails.length, 3);
+assert.strictEqual(new Set(mails).size, 1);
+assert.match(mails[0], /^mailto:[^@\s]+@[^@\s]+\.[a-z]+$/);
+assert.ok(!privacy.includes("github.com"), "no repo link");
+assert.ok(!privacy.includes("@@CONTACT@@"), "placeholder left");
+assert.strictEqual((privacy.match(/mailto:([^"]+)">\1</g) || []).length, 3, "link text = address");
+console.log("privacy page: ok");
